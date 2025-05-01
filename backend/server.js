@@ -1,44 +1,26 @@
-import express from 'express'
-import cors from 'cors'
-import 'dotenv/config'
-import connectDB from './config/mongodb.js'
-import connectCloudinary from './config/cloudinary.js'
-// import userModel from './models/userModel.js'
-import userRouter from './routes/userRoute.js'
+// index.js (updated to include productRouter)
+import express from 'express';
+import cors from 'cors';
+import 'dotenv/config';
+import { connectDB } from './config/mongodb.js';
+import { connectCloudinary } from './config/cloudinary.js';
+import userRouter from './routes/userRoute.js';
+import productRouter from './routes/productRoute.js';
 
-// App Config 
-const app = express()
-const port = process.env.PORT || 4000
-connectDB()
-connectCloudinary()
+const app = express();
+const port = process.env.PORT || 4000;
 
-// Middlewares
+connectDB();
+connectCloudinary();
 
-app.use(express.json())
-app.use(cors())
+app.use(express.json());
+app.use(cors());
 
-// api endpoints 
-app.use('/api/user', userRouter)
-
-
+app.use('/api/user', userRouter);
+app.use('/api/product', productRouter);
 
 app.get('/', (req, res) => {
-    res.send("API Working")
-})
+    res.send('API Working');
+});
 
-
-app.listen(port, ()=> console.log(`server started on PORT ${port}`))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+app.listen(port, () => console.log(`Server started on PORT ${port}`));
