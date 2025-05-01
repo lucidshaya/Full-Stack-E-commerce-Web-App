@@ -12,13 +12,14 @@ const Login = ({ setToken }) => {
   const onSubmitHandler = async (e) => {
     e.preventDefault();
     try {
-      console.log('Attempting login to:', `${backendUrl}/api/user/admin`); // Debug URL
+      console.log('Backend URL:', backendUrl); // Debug URL
+      console.log('Attempting login to:', `${backendUrl}/api/user/admin`);
       const response = await axios.post(`${backendUrl}/api/user/admin`, { email, password });
       if (response.data.success) {
         setToken(response.data.token);
-        localStorage.setItem('token', response.data.token); // Persist token
+        localStorage.setItem('token', response.data.token);
         toast.success('Login successful');
-        navigate('/list'); // Redirect to a protected route
+        navigate('/list');
       } else {
         toast.error(response.data.message || 'Login failed');
       }
@@ -27,9 +28,9 @@ const Login = ({ setToken }) => {
         message: error.message,
         code: error.code,
         response: error.response,
-        request: error.request,
+        request: error.request ? { url: error.request.url } : null,
       });
-      toast.error(error.response?.data?.message || 'Login failed. Please check your network or server.');
+      toast.error(error.response?.data?.message || 'Network error. Please check if the backend server is running.');
     }
   };
 
